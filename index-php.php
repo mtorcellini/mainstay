@@ -10,7 +10,7 @@
   src="https://code.jquery.com/jquery-3.6.1.min.js"
   integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ="
   crossorigin="anonymous"></script>
-    <script src="./calculator.js"></script>
+    <script src="./calculator-php.js"></script>
 </head>
 <body>
     <div class="calculator">
@@ -51,6 +51,57 @@
             </div>
         </div>
     </div>
+
+    <?php
+        $promptsArray = array(
+            0 => array(
+                "prompt" => "This is question one.",
+                "type" => "buttons",
+                "responses" => array(
+                    "0-200",
+                    "200-400",
+                    "400-600"
+                )
+            ),
+            1 => array(
+                "prompt" => "This is question two.",
+                "type" => "buttons",
+                "responses" => array(
+                    "25%",
+                    "50%",
+                    "75%",
+                    "100%"
+                )
+            ),
+            2 => array(
+                "prompt" => "This is question three.",
+                "type" => "slider",
+                "indicator" => "moving",
+                "thumbSize" => "20",
+                "min" => "0",
+                "max" => "100000"
+            ),
+            3 => array(
+                "prompt" => "This is question four.",
+                "type" => "buttons",
+                "responses" => array(
+                    "0-10",
+                    "10-20",
+                    "20-30",
+                    "30+"
+                )
+            ),
+        );
+        echo "<br>";
+        print_r($promptsArray);
+        echo "<br><br>";
+        $jsonPrompts = json_encode($promptsArray);
+        print_r($jsonPrompts);
+    ?>
+
+    <script>
+        const questions = <?php echo $jsonPrompts; ?>;
+    </script>
 
 </body>
 </html>
