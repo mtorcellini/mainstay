@@ -97,10 +97,21 @@
         echo "<br><br>";
         $jsonPrompts = json_encode($promptsArray);
         print_r($jsonPrompts);
+
+        $costToHire = 1633;
+        $reduceNoShowsRate = 0.5;
+        $increaseNewHireRetention = 0.1;
+        $answerRateForFAQs = 0.8;
+        $opperationalEfficiencyGain = 0.2;
     ?>
 
     <script>
         const questions = <?php echo $jsonPrompts; ?>;
+        const costToHire = <?php echo $costToHire; ?>;
+        const reduceNoShowsRate = <?php echo $reduceNoShowsRate; ?>;
+        const increaseNewHireRetention = <?php echo $increaseNewHireRetention; ?>;
+        const answerRateForFAQs = <?php echo $answerRateForFAQs; ?>;
+        const opperationalEfficiencyGain = <?php echo $opperationalEfficiencyGain; ?>;
     </script>
 
 </body>

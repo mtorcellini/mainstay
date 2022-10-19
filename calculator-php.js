@@ -1,5 +1,5 @@
 $(document).ready(() => {
-    
+
     const questionsPerPage = 2;
     
     const numPages = questions.length / questionsPerPage;
@@ -7,8 +7,6 @@ $(document).ready(() => {
     let page = 0;
     const submissionForm = $('.submission-form');
 
-
-    
     const showNext = () => {
         page++;
         goToPage(page);
@@ -77,7 +75,7 @@ $(document).ready(() => {
         
                     // add btn listeners
                     button.on('click', function() {
-                        console.log($(this).data());
+                        // console.log($(this).data());
                         $(this).parents('.responses').find('.response-button').removeClass('selected');
                         $(this).addClass('selected');
                         const {questionNum, responseVal, responseNum} = $(this).data();
@@ -154,20 +152,40 @@ $(document).ready(() => {
         submissionForm.show();
     }
 
+    const calcSavings = (responses) => {
+        console.log(responses);
 
+        let newHiresPerMonth = responses[0].responseVal;
+        let newHireDropOff = responses[1].responseVal;
+        let salaryHRandTalent = responses[2].responseVal;
+        let monthlyResignations = responses[3].responseVal;
 
+        const newHiresPerMonthMin = newHiresPerMonth.split('-')[0];
+        const newHiresPerMonthMax = newHiresPerMonth.split('-')[1];
+        let monthlyResignationsMin = monthlyResignations.split('-')[0];
+        let monthlyResignationsMax = monthlyResignations.split('-')[1];
+        newHireDropOff = parseInt(newHireDropOff) * .01;
 
-    // saving data
+        if (monthlyResignations.indexOf("+") != -1) {
+            monthlyResignationsMin = parseInt(monthlyResignations);
+            monthlyResignationsMax = NaN;
+        }
 
+        const dropOffsMin = newHiresPerMonthMin * newHireDropOff * 12;
+        const dropOffsMax = newHiresPerMonthMax * newHireDropOff * 12;
+        const savedNewHiresMin = dropOffsMin * reduceNoShowsRate;
+        const savedNewHiresMax = dropOffsMax * reduceNoShowsRate;
+        const recruitingCostSavingsMin = savedNewHiresMin * costToHire;
+        const recrutingCostSavingsMax = savedNewHiresMax * costToHire;
+        const efficiencyGains = salaryHRandTalent * opperationalEfficiencyGain;
+        const employeeRetentionSavingsMin = increaseNewHireRetention * monthlyResignationsMin * costToHire * 12;
+        const employeeRetentionSavingsMax = increaseNewHireRetention * monthlyResignationsMax * costToHire * 12;
 
-    $('.secretbutton').on('click', () => {
-        console.log('saved Data:');
-        console.log(savedData);
-        console.log("I DON'T KNOW WHAT TO DO WITH THIS INFORMATION");
-    })
+        const totalAnnualValueMin = recruitingCostSavingsMin + efficiencyGains + employeeRetentionSavingsMin;
+        const totalAnnualValueMax = recrutingCostSavingsMax + efficiencyGains + employeeRetentionSavingsMax;
 
-    
-
+        return [totalAnnualValueMin, totalAnnualValueMax];
+    }
 
     // listeners
     $('.next').on('click', () => {
@@ -180,6 +198,11 @@ $(document).ready(() => {
         showPrev();
     });
 
+    $('.secretbutton').on('click', () => {
+        let [min, max] = calcSavings(savedData);
+        console.log(min, max);
+    })
+
     const init = () => {
         $('.prev').hide();
         $('.form').empty();
@@ -187,9 +210,6 @@ $(document).ready(() => {
         showQuestion(0);
         showQuestion(1);
     }
-
-
-
 
     init();
 
